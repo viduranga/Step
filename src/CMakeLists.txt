@@ -1,56 +1,39 @@
-option(CPP_STARTER_USE_QT "Enable compilation of QT sample" OFF)
-option(CPP_STARTER_USE_FLTK "Enable compilation of FLTK sample" OFF)
-option(CPP_STARTER_USE_GTKMM "Enable compilation of GTKMM sample" OFF)
-option(CPP_STARTER_USE_IMGUI "Enable compilation of ImGui sample" OFF)
-option(CPP_STARTER_USE_NANA "Enable compilation of Nana GUI sample" OFF)
-option(CPP_STARTER_USE_SDL "Enable compilation of SDL sample" OFF)
+file(GLOB StepLang_SRC "StepLang/*.cpp")
+file(GLOB Interpreter_SRC "Interpreter/*.cpp")
+file(GLOB Parser_SRC "Parser/*.cpp")
+file(GLOB GDNative_SRC "GDNative/*.cpp")
 
-# sdl
-if(CPP_STARTER_USE_SDL)
-  message("Using SDL2")
-  add_subdirectory(sdl)
-endif()
-
-# qt
-if(CPP_STARTER_USE_QT)
-  message("Using Qt")
-  add_subdirectory(qt)
-endif()
-
-# fltk test
-if(CPP_STARTER_USE_FLTK)
-  message("Using FLTK")
-  add_subdirectory(fltk)
-endif()
-
-# gtkmm test
-if(CPP_STARTER_USE_GTKMM)
-  message("Using gtkmm")
-  add_subdirectory(gtkmm)
-endif()
-
-# imgui example
-if(CPP_STARTER_USE_IMGUI)
-  message("Using Dear ImGui")
-  add_subdirectory(imgui)
-endif()
-
-# Nana
-if(CPP_STARTER_USE_NANA)
-  message("Using Nana")
-  add_subdirectory(nana)
-endif()
-
-find_package(fmt)
-find_package(spdlog)
-find_package(docopt)
-
+include_directories(${antlr4-cppruntime_INCLUDES})
 # Generic test that uses conan libs
-add_executable(intro main.cpp)
-target_link_libraries(
-  intro
-  PRIVATE project_options
-          project_warnings
-          docopt::docopt
-          fmt::fmt
-          spdlog::spdlog)
+add_library(step_lang STATIC ${StepLang_SRC})
+set_property(TARGET step_lang PROPERTY CXX_STANDARD 11)
+target_link_libraries(step_lang antlr4-cppruntime::antlr4-cppruntime)
+target_include_directories(step_lang PRIVATE ${CMAKE_SOURCE_DIR}/include/StepLang)
+
+add_library(interpreter STATIC ${Interpreter_SRC})
+target_link_libraries(interpreter
+        PRIVATE project_options
+                project_warnings
+                step_lang)
+
+add_library(parser STATIC ${Parser_SRC})
+target_link_libraries(parser
+        PRIVATE project_options
+                project_warnings)
+
+add_library(step_engine_gdnative SHARED ${GDNative_SRC})
+
+target_link_libraries(step_engine_gdnative
+        PRIVATE project_options
+                project_warnings
+                interpreter
+                parser
+                godot-cpp::godot-cpp)
+
+#target_link_libraries(
+#  intro
+#  PRIVATE project_options
+#          project_warnings
+#          docopt::docopt
+#          fmt::fmt
+#          spdlog::spdlog)

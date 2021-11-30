@@ -21,7 +21,8 @@ macro(run_conan)
 
   # Add (or remove) remotes as needed
   # conan_add_remote(NAME conan-center URL https://conan.bintray.com)
-  conan_add_remote(NAME cci URL https://center.conan.io INDEX 0)
+  conan_add_remote(NAME vidura-third-party URL https://vidura.jfrog.io/artifactory/api/conan/third-party-conan INDEX 0)
+  conan_add_remote(NAME cci URL https://center.conan.io INDEX 1)
   conan_add_remote(
     NAME bincrafters URL
     https://bincrafters.jfrog.io/artifactory/api/conan/public-conan)
@@ -49,10 +50,6 @@ macro(run_conan)
       ${CMAKE_SOURCE_DIR}
       BUILD
       missing
-      # Pass compile-time configured options into conan
-      OPTIONS
-      cpp_starter_use_imgui=${CPP_STARTER_USE_IMGUI}
-      cpp_starter_use_sdl=${CPP_STARTER_USE_SDL}
       SETTINGS
       ${settings})
   endforeach()
