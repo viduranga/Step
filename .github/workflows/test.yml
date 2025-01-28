@@ -13,8 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Clang
-        uses: egor-tensin/setup-clang@v1
+      - name: Set up GCC
+        uses: egor-tensin/setup-gcc@v1
         with:
           version: latest
           platform: x64
@@ -26,8 +26,6 @@ jobs:
         uses: threeal/cmake-action@v2.1.0
         with:
           generator: Ninja
-          cxx-compiler: clang++
-          c-compiler: clang
           options: |
             CMAKE_BUILD_TYPE=RelWithDebInfo
 
