@@ -13,6 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Set up Clang
+        uses: egor-tensin/setup-clang@v1
+        with:
+          version: latest
+          platform: x64
+
       - name: Setup Ninja
         uses: seanmiddleditch/gha-setup-ninja@v5
 
@@ -21,6 +27,7 @@ jobs:
         with:
           generator: Ninja
           cxx-compiler: clang++
+          c-compiler: clang
           options: |
             CMAKE_BUILD_TYPE=RelWithDebInfo
 

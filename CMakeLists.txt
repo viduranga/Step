@@ -5,6 +5,9 @@ project(StepEngine CXX)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
+# Don't check C compiler
+set(CMAKE_C_COMPILER_WORKS 1)
+
 message("Detected cmake version ${CMAKE_VERSION}")
 
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.28.0)
