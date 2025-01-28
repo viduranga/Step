@@ -1,5 +1,5 @@
 
-// Generated from StepLang.g4 by ANTLR 4.9.3
+// Generated from StepLang.g4 by ANTLR 4.13.2
 
 
 #include "StepLangListener.h"
@@ -9,14 +9,123 @@
 
 
 using namespace antlrcpp;
+
 using namespace antlr4;
 
-StepLangParser::StepLangParser(TokenStream *input) : Parser(input) {
-  _interpreter = new atn::ParserATNSimulator(this, _atn, _decisionToDFA, _sharedContextCache);
+namespace {
+
+struct StepLangParserStaticData final {
+  StepLangParserStaticData(std::vector<std::string> ruleNames,
+                        std::vector<std::string> literalNames,
+                        std::vector<std::string> symbolicNames)
+      : ruleNames(std::move(ruleNames)), literalNames(std::move(literalNames)),
+        symbolicNames(std::move(symbolicNames)),
+        vocabulary(this->literalNames, this->symbolicNames) {}
+
+  StepLangParserStaticData(const StepLangParserStaticData&) = delete;
+  StepLangParserStaticData(StepLangParserStaticData&&) = delete;
+  StepLangParserStaticData& operator=(const StepLangParserStaticData&) = delete;
+  StepLangParserStaticData& operator=(StepLangParserStaticData&&) = delete;
+
+  std::vector<antlr4::dfa::DFA> decisionToDFA;
+  antlr4::atn::PredictionContextCache sharedContextCache;
+  const std::vector<std::string> ruleNames;
+  const std::vector<std::string> literalNames;
+  const std::vector<std::string> symbolicNames;
+  const antlr4::dfa::Vocabulary vocabulary;
+  antlr4::atn::SerializedATNView serializedATN;
+  std::unique_ptr<antlr4::atn::ATN> atn;
+};
+
+::antlr4::internal::OnceFlag steplangParserOnceFlag;
+#if ANTLR4_USE_THREAD_LOCAL_CACHE
+static thread_local
+#endif
+std::unique_ptr<StepLangParserStaticData> steplangParserStaticData = nullptr;
+
+void steplangParserInitialize() {
+#if ANTLR4_USE_THREAD_LOCAL_CACHE
+  if (steplangParserStaticData != nullptr) {
+    return;
+  }
+#else
+  assert(steplangParserStaticData == nullptr);
+#endif
+  auto staticData = std::make_unique<StepLangParserStaticData>(
+    std::vector<std::string>{
+      "program", "main", "function", "header", "body", "statement", "variable_list", 
+      "invocation", "expression_list", "loop", "expression"
+    },
+    std::vector<std::string>{
+      "", "'\\n'", "'='", "'('", "')'", "','", "'<'", "'>'", "'['", "']'", 
+      "", "", "", "'*'", "'/'", "'+'", "'-'"
+    },
+    std::vector<std::string>{
+      "", "", "", "", "", "", "", "", "", "", "ACTION", "IDENTIFIER", "OPERATOR", 
+      "MUL", "DIV", "ADD", "SUB", "NUMBER", "WHITESPACE"
+    }
+  );
+  static const int32_t serializedATNSegment[] = {
+  	4,1,18,107,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,1,0,5,0,24,8,0,10,0,12,0,27,9,0,1,0,1,
+  	0,1,1,1,1,3,1,33,8,1,1,2,1,2,1,2,1,2,1,2,1,3,1,3,1,3,1,3,1,3,3,3,45,8,
+  	3,1,4,4,4,48,8,4,11,4,12,4,49,1,5,1,5,1,5,3,5,55,8,5,1,6,1,6,5,6,59,8,
+  	6,10,6,12,6,62,9,6,1,6,1,6,1,7,1,7,1,7,1,7,1,7,3,7,71,8,7,1,8,1,8,1,8,
+  	5,8,76,8,8,10,8,12,8,79,9,8,1,8,1,8,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,10,
+  	1,10,1,10,1,10,1,10,1,10,1,10,3,10,97,8,10,1,10,1,10,1,10,5,10,102,8,
+  	10,10,10,12,10,105,9,10,1,10,0,1,20,11,0,2,4,6,8,10,12,14,16,18,20,0,
+  	0,107,0,25,1,0,0,0,2,30,1,0,0,0,4,34,1,0,0,0,6,39,1,0,0,0,8,47,1,0,0,
+  	0,10,54,1,0,0,0,12,60,1,0,0,0,14,65,1,0,0,0,16,77,1,0,0,0,18,82,1,0,0,
+  	0,20,96,1,0,0,0,22,24,3,4,2,0,23,22,1,0,0,0,24,27,1,0,0,0,25,23,1,0,0,
+  	0,25,26,1,0,0,0,26,28,1,0,0,0,27,25,1,0,0,0,28,29,3,2,1,0,29,1,1,0,0,
+  	0,30,32,3,8,4,0,31,33,5,1,0,0,32,31,1,0,0,0,32,33,1,0,0,0,33,3,1,0,0,
+  	0,34,35,3,6,3,0,35,36,5,2,0,0,36,37,3,8,4,0,37,38,5,1,0,0,38,5,1,0,0,
+  	0,39,44,5,11,0,0,40,41,5,3,0,0,41,42,3,12,6,0,42,43,5,4,0,0,43,45,1,0,
+  	0,0,44,40,1,0,0,0,44,45,1,0,0,0,45,7,1,0,0,0,46,48,3,10,5,0,47,46,1,0,
+  	0,0,48,49,1,0,0,0,49,47,1,0,0,0,49,50,1,0,0,0,50,9,1,0,0,0,51,55,5,10,
+  	0,0,52,55,3,18,9,0,53,55,3,14,7,0,54,51,1,0,0,0,54,52,1,0,0,0,54,53,1,
+  	0,0,0,55,11,1,0,0,0,56,57,5,11,0,0,57,59,5,5,0,0,58,56,1,0,0,0,59,62,
+  	1,0,0,0,60,58,1,0,0,0,60,61,1,0,0,0,61,63,1,0,0,0,62,60,1,0,0,0,63,64,
+  	5,11,0,0,64,13,1,0,0,0,65,70,5,11,0,0,66,67,5,3,0,0,67,68,3,16,8,0,68,
+  	69,5,4,0,0,69,71,1,0,0,0,70,66,1,0,0,0,70,71,1,0,0,0,71,15,1,0,0,0,72,
+  	73,3,20,10,0,73,74,5,5,0,0,74,76,1,0,0,0,75,72,1,0,0,0,76,79,1,0,0,0,
+  	77,75,1,0,0,0,77,78,1,0,0,0,78,80,1,0,0,0,79,77,1,0,0,0,80,81,3,20,10,
+  	0,81,17,1,0,0,0,82,83,5,6,0,0,83,84,3,20,10,0,84,85,5,7,0,0,85,86,5,8,
+  	0,0,86,87,3,8,4,0,87,88,5,9,0,0,88,19,1,0,0,0,89,90,6,10,-1,0,90,97,5,
+  	11,0,0,91,97,5,17,0,0,92,93,5,3,0,0,93,94,3,20,10,0,94,95,5,4,0,0,95,
+  	97,1,0,0,0,96,89,1,0,0,0,96,91,1,0,0,0,96,92,1,0,0,0,97,103,1,0,0,0,98,
+  	99,10,2,0,0,99,100,5,12,0,0,100,102,3,20,10,3,101,98,1,0,0,0,102,105,
+  	1,0,0,0,103,101,1,0,0,0,103,104,1,0,0,0,104,21,1,0,0,0,105,103,1,0,0,
+  	0,10,25,32,44,49,54,60,70,77,96,103
+  };
+  staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
+
+  antlr4::atn::ATNDeserializer deserializer;
+  staticData->atn = deserializer.deserialize(staticData->serializedATN);
+
+  const size_t count = staticData->atn->getNumberOfDecisions();
+  staticData->decisionToDFA.reserve(count);
+  for (size_t i = 0; i < count; i++) { 
+    staticData->decisionToDFA.emplace_back(staticData->atn->getDecisionState(i), i);
+  }
+  steplangParserStaticData = std::move(staticData);
+}
+
+}
+
+StepLangParser::StepLangParser(TokenStream *input) : StepLangParser(input, antlr4::atn::ParserATNSimulatorOptions()) {}
+
+StepLangParser::StepLangParser(TokenStream *input, const antlr4::atn::ParserATNSimulatorOptions &options) : Parser(input) {
+  StepLangParser::initialize();
+  _interpreter = new atn::ParserATNSimulator(this, *steplangParserStaticData->atn, steplangParserStaticData->decisionToDFA, steplangParserStaticData->sharedContextCache, options);
 }
 
 StepLangParser::~StepLangParser() {
   delete _interpreter;
+}
+
+const atn::ATN& StepLangParser::getATN() const {
+  return *steplangParserStaticData->atn;
 }
 
 std::string StepLangParser::getGrammarFileName() const {
@@ -24,11 +133,15 @@ std::string StepLangParser::getGrammarFileName() const {
 }
 
 const std::vector<std::string>& StepLangParser::getRuleNames() const {
-  return _ruleNames;
+  return steplangParserStaticData->ruleNames;
 }
 
-dfa::Vocabulary& StepLangParser::getVocabulary() const {
-  return _vocabulary;
+const dfa::Vocabulary& StepLangParser::getVocabulary() const {
+  return steplangParserStaticData->vocabulary;
+}
+
+antlr4::atn::SerializedATNView StepLangParser::getSerializedATN() const {
+  return steplangParserStaticData->serializedATN;
 }
 
 
@@ -68,7 +181,7 @@ void StepLangParser::ProgramContext::exitRule(tree::ParseTreeListener *listener)
 }
 
 
-antlrcpp::Any StepLangParser::ProgramContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any StepLangParser::ProgramContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<StepLangVisitor*>(visitor))
     return parserVisitor->visitProgram(this);
   else
@@ -142,7 +255,7 @@ void StepLangParser::MainContext::exitRule(tree::ParseTreeListener *listener) {
 }
 
 
-antlrcpp::Any StepLangParser::MainContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any StepLangParser::MainContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<StepLangVisitor*>(visitor))
     return parserVisitor->visitMain(this);
   else
@@ -216,7 +329,7 @@ void StepLangParser::FunctionContext::exitRule(tree::ParseTreeListener *listener
 }
 
 
-antlrcpp::Any StepLangParser::FunctionContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any StepLangParser::FunctionContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<StepLangVisitor*>(visitor))
     return parserVisitor->visitFunction(this);
   else
@@ -287,7 +400,7 @@ void StepLangParser::HeaderContext::exitRule(tree::ParseTreeListener *listener) 
 }
 
 
-antlrcpp::Any StepLangParser::HeaderContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any StepLangParser::HeaderContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<StepLangVisitor*>(visitor))
     return parserVisitor->visitHeader(this);
   else
@@ -365,7 +478,7 @@ void StepLangParser::BodyContext::exitRule(tree::ParseTreeListener *listener) {
 }
 
 
-antlrcpp::Any StepLangParser::BodyContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any StepLangParser::BodyContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<StepLangVisitor*>(visitor))
     return parserVisitor->visitBody(this);
   else
@@ -396,9 +509,7 @@ StepLangParser::BodyContext* StepLangParser::body() {
       _errHandler->sync(this);
       _la = _input->LA(1);
     } while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & ((1ULL << StepLangParser::T__5)
-      | (1ULL << StepLangParser::ACTION)
-      | (1ULL << StepLangParser::IDENTIFIER))) != 0));
+      ((1ULL << _la) & 3136) != 0));
    
   }
   catch (RecognitionException &e) {
@@ -446,7 +557,7 @@ void StepLangParser::StatementContext::exitRule(tree::ParseTreeListener *listene
 }
 
 
-antlrcpp::Any StepLangParser::StatementContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any StepLangParser::StatementContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<StepLangVisitor*>(visitor))
     return parserVisitor->visitStatement(this);
   else
@@ -535,7 +646,7 @@ void StepLangParser::Variable_listContext::exitRule(tree::ParseTreeListener *lis
 }
 
 
-antlrcpp::Any StepLangParser::Variable_listContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any StepLangParser::Variable_listContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<StepLangVisitor*>(visitor))
     return parserVisitor->visitVariable_list(this);
   else
@@ -615,7 +726,7 @@ void StepLangParser::InvocationContext::exitRule(tree::ParseTreeListener *listen
 }
 
 
-antlrcpp::Any StepLangParser::InvocationContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any StepLangParser::InvocationContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<StepLangVisitor*>(visitor))
     return parserVisitor->visitInvocation(this);
   else
@@ -693,7 +804,7 @@ void StepLangParser::Expression_listContext::exitRule(tree::ParseTreeListener *l
 }
 
 
-antlrcpp::Any StepLangParser::Expression_listContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any StepLangParser::Expression_listContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<StepLangVisitor*>(visitor))
     return parserVisitor->visitExpression_list(this);
   else
@@ -773,7 +884,7 @@ void StepLangParser::LoopContext::exitRule(tree::ParseTreeListener *listener) {
 }
 
 
-antlrcpp::Any StepLangParser::LoopContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any StepLangParser::LoopContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<StepLangVisitor*>(visitor))
     return parserVisitor->visitLoop(this);
   else
@@ -860,7 +971,7 @@ void StepLangParser::ExpressionContext::exitRule(tree::ParseTreeListener *listen
 }
 
 
-antlrcpp::Any StepLangParser::ExpressionContext::accept(tree::ParseTreeVisitor *visitor) {
+std::any StepLangParser::ExpressionContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<StepLangVisitor*>(visitor))
     return parserVisitor->visitExpression(this);
   else
@@ -973,134 +1084,10 @@ bool StepLangParser::expressionSempred(ExpressionContext *_localctx, size_t pred
   return true;
 }
 
-// Static vars and initialization.
-std::vector<dfa::DFA> StepLangParser::_decisionToDFA;
-atn::PredictionContextCache StepLangParser::_sharedContextCache;
-
-// We own the ATN which in turn owns the ATN states.
-atn::ATN StepLangParser::_atn;
-std::vector<uint16_t> StepLangParser::_serializedATN;
-
-std::vector<std::string> StepLangParser::_ruleNames = {
-  "program", "main", "function", "header", "body", "statement", "variable_list", 
-  "invocation", "expression_list", "loop", "expression"
-};
-
-std::vector<std::string> StepLangParser::_literalNames = {
-  "", "'\n'", "'='", "'('", "')'", "','", "'<'", "'>'", "'['", "']'", "", 
-  "", "", "'*'", "'/'", "'+'", "'-'"
-};
-
-std::vector<std::string> StepLangParser::_symbolicNames = {
-  "", "", "", "", "", "", "", "", "", "", "ACTION", "IDENTIFIER", "OPERATOR", 
-  "MUL", "DIV", "ADD", "SUB", "NUMBER", "WHITESPACE"
-};
-
-dfa::Vocabulary StepLangParser::_vocabulary(_literalNames, _symbolicNames);
-
-std::vector<std::string> StepLangParser::_tokenNames;
-
-StepLangParser::Initializer::Initializer() {
-	for (size_t i = 0; i < _symbolicNames.size(); ++i) {
-		std::string name = _vocabulary.getLiteralName(i);
-		if (name.empty()) {
-			name = _vocabulary.getSymbolicName(i);
-		}
-
-		if (name.empty()) {
-			_tokenNames.push_back("<INVALID>");
-		} else {
-      _tokenNames.push_back(name);
-    }
-	}
-
-  static const uint16_t serializedATNSegment0[] = {
-    0x3, 0x608b, 0xa72a, 0x8133, 0xb9ed, 0x417c, 0x3be7, 0x7786, 0x5964, 
-       0x3, 0x14, 0x6d, 0x4, 0x2, 0x9, 0x2, 0x4, 0x3, 0x9, 0x3, 0x4, 0x4, 
-       0x9, 0x4, 0x4, 0x5, 0x9, 0x5, 0x4, 0x6, 0x9, 0x6, 0x4, 0x7, 0x9, 
-       0x7, 0x4, 0x8, 0x9, 0x8, 0x4, 0x9, 0x9, 0x9, 0x4, 0xa, 0x9, 0xa, 
-       0x4, 0xb, 0x9, 0xb, 0x4, 0xc, 0x9, 0xc, 0x3, 0x2, 0x7, 0x2, 0x1a, 
-       0xa, 0x2, 0xc, 0x2, 0xe, 0x2, 0x1d, 0xb, 0x2, 0x3, 0x2, 0x3, 0x2, 
-       0x3, 0x3, 0x3, 0x3, 0x5, 0x3, 0x23, 0xa, 0x3, 0x3, 0x4, 0x3, 0x4, 
-       0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 
-       0x5, 0x3, 0x5, 0x5, 0x5, 0x2f, 0xa, 0x5, 0x3, 0x6, 0x6, 0x6, 0x32, 
-       0xa, 0x6, 0xd, 0x6, 0xe, 0x6, 0x33, 0x3, 0x7, 0x3, 0x7, 0x3, 0x7, 
-       0x5, 0x7, 0x39, 0xa, 0x7, 0x3, 0x8, 0x3, 0x8, 0x7, 0x8, 0x3d, 0xa, 
-       0x8, 0xc, 0x8, 0xe, 0x8, 0x40, 0xb, 0x8, 0x3, 0x8, 0x3, 0x8, 0x3, 
-       0x9, 0x3, 0x9, 0x3, 0x9, 0x3, 0x9, 0x3, 0x9, 0x5, 0x9, 0x49, 0xa, 
-       0x9, 0x3, 0xa, 0x3, 0xa, 0x3, 0xa, 0x7, 0xa, 0x4e, 0xa, 0xa, 0xc, 
-       0xa, 0xe, 0xa, 0x51, 0xb, 0xa, 0x3, 0xa, 0x3, 0xa, 0x3, 0xb, 0x3, 
-       0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xb, 0x3, 0xc, 
-       0x3, 0xc, 0x3, 0xc, 0x3, 0xc, 0x3, 0xc, 0x3, 0xc, 0x3, 0xc, 0x5, 
-       0xc, 0x63, 0xa, 0xc, 0x3, 0xc, 0x3, 0xc, 0x3, 0xc, 0x7, 0xc, 0x68, 
-       0xa, 0xc, 0xc, 0xc, 0xe, 0xc, 0x6b, 0xb, 0xc, 0x3, 0xc, 0x2, 0x3, 
-       0x16, 0xd, 0x2, 0x4, 0x6, 0x8, 0xa, 0xc, 0xe, 0x10, 0x12, 0x14, 0x16, 
-       0x2, 0x2, 0x2, 0x6d, 0x2, 0x1b, 0x3, 0x2, 0x2, 0x2, 0x4, 0x20, 0x3, 
-       0x2, 0x2, 0x2, 0x6, 0x24, 0x3, 0x2, 0x2, 0x2, 0x8, 0x29, 0x3, 0x2, 
-       0x2, 0x2, 0xa, 0x31, 0x3, 0x2, 0x2, 0x2, 0xc, 0x38, 0x3, 0x2, 0x2, 
-       0x2, 0xe, 0x3e, 0x3, 0x2, 0x2, 0x2, 0x10, 0x43, 0x3, 0x2, 0x2, 0x2, 
-       0x12, 0x4f, 0x3, 0x2, 0x2, 0x2, 0x14, 0x54, 0x3, 0x2, 0x2, 0x2, 0x16, 
-       0x62, 0x3, 0x2, 0x2, 0x2, 0x18, 0x1a, 0x5, 0x6, 0x4, 0x2, 0x19, 0x18, 
-       0x3, 0x2, 0x2, 0x2, 0x1a, 0x1d, 0x3, 0x2, 0x2, 0x2, 0x1b, 0x19, 0x3, 
-       0x2, 0x2, 0x2, 0x1b, 0x1c, 0x3, 0x2, 0x2, 0x2, 0x1c, 0x1e, 0x3, 0x2, 
-       0x2, 0x2, 0x1d, 0x1b, 0x3, 0x2, 0x2, 0x2, 0x1e, 0x1f, 0x5, 0x4, 0x3, 
-       0x2, 0x1f, 0x3, 0x3, 0x2, 0x2, 0x2, 0x20, 0x22, 0x5, 0xa, 0x6, 0x2, 
-       0x21, 0x23, 0x7, 0x3, 0x2, 0x2, 0x22, 0x21, 0x3, 0x2, 0x2, 0x2, 0x22, 
-       0x23, 0x3, 0x2, 0x2, 0x2, 0x23, 0x5, 0x3, 0x2, 0x2, 0x2, 0x24, 0x25, 
-       0x5, 0x8, 0x5, 0x2, 0x25, 0x26, 0x7, 0x4, 0x2, 0x2, 0x26, 0x27, 0x5, 
-       0xa, 0x6, 0x2, 0x27, 0x28, 0x7, 0x3, 0x2, 0x2, 0x28, 0x7, 0x3, 0x2, 
-       0x2, 0x2, 0x29, 0x2e, 0x7, 0xd, 0x2, 0x2, 0x2a, 0x2b, 0x7, 0x5, 0x2, 
-       0x2, 0x2b, 0x2c, 0x5, 0xe, 0x8, 0x2, 0x2c, 0x2d, 0x7, 0x6, 0x2, 0x2, 
-       0x2d, 0x2f, 0x3, 0x2, 0x2, 0x2, 0x2e, 0x2a, 0x3, 0x2, 0x2, 0x2, 0x2e, 
-       0x2f, 0x3, 0x2, 0x2, 0x2, 0x2f, 0x9, 0x3, 0x2, 0x2, 0x2, 0x30, 0x32, 
-       0x5, 0xc, 0x7, 0x2, 0x31, 0x30, 0x3, 0x2, 0x2, 0x2, 0x32, 0x33, 0x3, 
-       0x2, 0x2, 0x2, 0x33, 0x31, 0x3, 0x2, 0x2, 0x2, 0x33, 0x34, 0x3, 0x2, 
-       0x2, 0x2, 0x34, 0xb, 0x3, 0x2, 0x2, 0x2, 0x35, 0x39, 0x7, 0xc, 0x2, 
-       0x2, 0x36, 0x39, 0x5, 0x14, 0xb, 0x2, 0x37, 0x39, 0x5, 0x10, 0x9, 
-       0x2, 0x38, 0x35, 0x3, 0x2, 0x2, 0x2, 0x38, 0x36, 0x3, 0x2, 0x2, 0x2, 
-       0x38, 0x37, 0x3, 0x2, 0x2, 0x2, 0x39, 0xd, 0x3, 0x2, 0x2, 0x2, 0x3a, 
-       0x3b, 0x7, 0xd, 0x2, 0x2, 0x3b, 0x3d, 0x7, 0x7, 0x2, 0x2, 0x3c, 0x3a, 
-       0x3, 0x2, 0x2, 0x2, 0x3d, 0x40, 0x3, 0x2, 0x2, 0x2, 0x3e, 0x3c, 0x3, 
-       0x2, 0x2, 0x2, 0x3e, 0x3f, 0x3, 0x2, 0x2, 0x2, 0x3f, 0x41, 0x3, 0x2, 
-       0x2, 0x2, 0x40, 0x3e, 0x3, 0x2, 0x2, 0x2, 0x41, 0x42, 0x7, 0xd, 0x2, 
-       0x2, 0x42, 0xf, 0x3, 0x2, 0x2, 0x2, 0x43, 0x48, 0x7, 0xd, 0x2, 0x2, 
-       0x44, 0x45, 0x7, 0x5, 0x2, 0x2, 0x45, 0x46, 0x5, 0x12, 0xa, 0x2, 
-       0x46, 0x47, 0x7, 0x6, 0x2, 0x2, 0x47, 0x49, 0x3, 0x2, 0x2, 0x2, 0x48, 
-       0x44, 0x3, 0x2, 0x2, 0x2, 0x48, 0x49, 0x3, 0x2, 0x2, 0x2, 0x49, 0x11, 
-       0x3, 0x2, 0x2, 0x2, 0x4a, 0x4b, 0x5, 0x16, 0xc, 0x2, 0x4b, 0x4c, 
-       0x7, 0x7, 0x2, 0x2, 0x4c, 0x4e, 0x3, 0x2, 0x2, 0x2, 0x4d, 0x4a, 0x3, 
-       0x2, 0x2, 0x2, 0x4e, 0x51, 0x3, 0x2, 0x2, 0x2, 0x4f, 0x4d, 0x3, 0x2, 
-       0x2, 0x2, 0x4f, 0x50, 0x3, 0x2, 0x2, 0x2, 0x50, 0x52, 0x3, 0x2, 0x2, 
-       0x2, 0x51, 0x4f, 0x3, 0x2, 0x2, 0x2, 0x52, 0x53, 0x5, 0x16, 0xc, 
-       0x2, 0x53, 0x13, 0x3, 0x2, 0x2, 0x2, 0x54, 0x55, 0x7, 0x8, 0x2, 0x2, 
-       0x55, 0x56, 0x5, 0x16, 0xc, 0x2, 0x56, 0x57, 0x7, 0x9, 0x2, 0x2, 
-       0x57, 0x58, 0x7, 0xa, 0x2, 0x2, 0x58, 0x59, 0x5, 0xa, 0x6, 0x2, 0x59, 
-       0x5a, 0x7, 0xb, 0x2, 0x2, 0x5a, 0x15, 0x3, 0x2, 0x2, 0x2, 0x5b, 0x5c, 
-       0x8, 0xc, 0x1, 0x2, 0x5c, 0x63, 0x7, 0xd, 0x2, 0x2, 0x5d, 0x63, 0x7, 
-       0x13, 0x2, 0x2, 0x5e, 0x5f, 0x7, 0x5, 0x2, 0x2, 0x5f, 0x60, 0x5, 
-       0x16, 0xc, 0x2, 0x60, 0x61, 0x7, 0x6, 0x2, 0x2, 0x61, 0x63, 0x3, 
-       0x2, 0x2, 0x2, 0x62, 0x5b, 0x3, 0x2, 0x2, 0x2, 0x62, 0x5d, 0x3, 0x2, 
-       0x2, 0x2, 0x62, 0x5e, 0x3, 0x2, 0x2, 0x2, 0x63, 0x69, 0x3, 0x2, 0x2, 
-       0x2, 0x64, 0x65, 0xc, 0x4, 0x2, 0x2, 0x65, 0x66, 0x7, 0xe, 0x2, 0x2, 
-       0x66, 0x68, 0x5, 0x16, 0xc, 0x5, 0x67, 0x64, 0x3, 0x2, 0x2, 0x2, 
-       0x68, 0x6b, 0x3, 0x2, 0x2, 0x2, 0x69, 0x67, 0x3, 0x2, 0x2, 0x2, 0x69, 
-       0x6a, 0x3, 0x2, 0x2, 0x2, 0x6a, 0x17, 0x3, 0x2, 0x2, 0x2, 0x6b, 0x69, 
-       0x3, 0x2, 0x2, 0x2, 0xc, 0x1b, 0x22, 0x2e, 0x33, 0x38, 0x3e, 0x48, 
-       0x4f, 0x62, 0x69, 
-  };
-
-  _serializedATN.insert(_serializedATN.end(), serializedATNSegment0,
-    serializedATNSegment0 + sizeof(serializedATNSegment0) / sizeof(serializedATNSegment0[0]));
-
-
-  atn::ATNDeserializer deserializer;
-  _atn = deserializer.deserialize(_serializedATN);
-
-  size_t count = _atn.getNumberOfDecisions();
-  _decisionToDFA.reserve(count);
-  for (size_t i = 0; i < count; i++) { 
-    _decisionToDFA.emplace_back(_atn.getDecisionState(i), i);
-  }
+void StepLangParser::initialize() {
+#if ANTLR4_USE_THREAD_LOCAL_CACHE
+  steplangParserInitialize();
+#else
+  ::antlr4::internal::call_once(steplangParserOnceFlag, steplangParserInitialize);
+#endif
 }
-
-StepLangParser::Initializer StepLangParser::_init;

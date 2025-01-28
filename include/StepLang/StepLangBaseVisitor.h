@@ -1,5 +1,5 @@
 
-// Generated from StepLang.g4 by ANTLR 4.9.3
+// Generated from StepLang.g4 by ANTLR 4.13.2
 
 #pragma once
 
@@ -15,47 +15,47 @@
 class  StepLangBaseVisitor : public StepLangVisitor {
 public:
 
-  virtual antlrcpp::Any visitProgram(StepLangParser::ProgramContext *ctx) override {
+  virtual std::any visitProgram(StepLangParser::ProgramContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitMain(StepLangParser::MainContext *ctx) override {
+  virtual std::any visitMain(StepLangParser::MainContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitFunction(StepLangParser::FunctionContext *ctx) override {
+  virtual std::any visitFunction(StepLangParser::FunctionContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitHeader(StepLangParser::HeaderContext *ctx) override {
+  virtual std::any visitHeader(StepLangParser::HeaderContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitBody(StepLangParser::BodyContext *ctx) override {
+  virtual std::any visitBody(StepLangParser::BodyContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitStatement(StepLangParser::StatementContext *ctx) override {
+  virtual std::any visitStatement(StepLangParser::StatementContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitVariable_list(StepLangParser::Variable_listContext *ctx) override {
+  virtual std::any visitVariable_list(StepLangParser::Variable_listContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitInvocation(StepLangParser::InvocationContext *ctx) override {
+  virtual std::any visitInvocation(StepLangParser::InvocationContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitExpression_list(StepLangParser::Expression_listContext *ctx) override {
+  virtual std::any visitExpression_list(StepLangParser::Expression_listContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitLoop(StepLangParser::LoopContext *ctx) override {
+  virtual std::any visitLoop(StepLangParser::LoopContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitExpression(StepLangParser::ExpressionContext *ctx) override {
+  virtual std::any visitExpression(StepLangParser::ExpressionContext *ctx) override {
     return visitChildren(ctx);
   }
 

@@ -1,94 +1,52 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.28)
 
-# Set the project name to your project name, my project isn't very descriptive
-project(myproject CXX)
-include(cmake/StandardProjectSettings.cmake)
-include(cmake/PreventInSourceBuilds.cmake)
+project(StepEngine CXX)
 
-# Link this 'library' to set the c++ standard / compile-time options requested
-add_library(project_options INTERFACE)
-target_compile_features(project_options INTERFACE cxx_std_17)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
 
-if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
-  option(ENABLE_BUILD_WITH_TIME_TRACE "Enable -ftime-trace to generate time tracing .json files on clang" OFF)
-  if(ENABLE_BUILD_WITH_TIME_TRACE)
-    target_compile_options(project_options INTERFACE -ftime-trace)
+message("Detected cmake version ${CMAKE_VERSION}")
+
+if(${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.28.0)
+  message("Detected cmake version 3.28.0 or higher. Experimental C++ modules are not required.")
+else()
+  set(CMAKE_EXPERIMENTAL_CXX_MODULE_DYNDEP 1)
+  if(${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.27.0)
+    message("Detected cmake version 3.27.0 or higher")
+    set(CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API "aa1f7df0-828a-4fcd-9afc-2dc80491aca7")
+  elseif(${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.26.0)
+    message("Detected cmake version 3.26.0 or higher")
+    set(CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API "2182bf5c-ef0d-489a-91da-49dbc3090d2a")
   endif()
 endif()
 
-# Link this 'library' to use the warnings specified in CompilerWarnings.cmake
-add_library(project_warnings INTERFACE)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  # using Clang
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  # using GCC
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=stdlibc++")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=stdlibc++")
 
-# enable cache system
-include(cmake/Cache.cmake)
-
-# Add linker configuration
-include(cmake/Linker.cmake)
-configure_linker(project_options)
-
-# standard compiler warnings
-include(cmake/CompilerWarnings.cmake)
-set_project_warnings(project_warnings)
-
-# sanitizer options if supported by compiler
-include(cmake/Sanitizers.cmake)
-enable_sanitizers(project_options)
-
-# enable doxygen
-include(cmake/Doxygen.cmake)
-enable_doxygen()
-
-# allow for static analysis options
-include(cmake/StaticAnalyzers.cmake)
-
-option(BUILD_SHARED_LIBS "Enable compilation of shared libraries" OFF)
-option(ENABLE_TESTING "Enable Test Builds" ON)
-option(ENABLE_FUZZING "Enable Fuzzing Builds" OFF)
-
-# Very basic PCH example
-option(ENABLE_PCH "Enable Precompiled Headers" OFF)
-if(ENABLE_PCH)
-  # This sets a global PCH parameter, each project will build its own PCH, which is a good idea if any #define's change
-  #
-  # consider breaking this out per project as necessary
-  target_precompile_headers(
-    project_options
-    INTERFACE
-    <vector>
-    <string>
-    <map>
-    <utility>)
+  include(gcc_modules.cmake)
 endif()
 
-option(ENABLE_CONAN "Use Conan for dependency management" ON)
-if(ENABLE_CONAN)
-  include(cmake/Conan.cmake)
-  run_conan()
-endif()
+#link_libraries("-fsanitize=undefined")
+# set(CMAKE_CXX_SCAN_FOR_MODULES ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+# Default to C++ extensions being off. Clang's modules support have trouble
+# with extensions right now.
+set(CMAKE_CXX_EXTENSIONS ON)
 
+set(CMAKE_CXX_STANDARD 20)
 
-IF(WIN32)
-  SET(CMAKE_FIND_LIBRARY_SUFFIXES .lib .a ${CMAKE_FIND_LIBRARY_SUFFIXES})
-ELSE(WIN32)
-  SET(CMAKE_FIND_LIBRARY_SUFFIXES .a ${CMAKE_FIND_LIBRARY_SUFFIXES})
-ENDIF(WIN32)
+set(CMAKE_MACOSX_RPATH 1)
 
-find_package(antlr4-cppruntime)
-find_package(godot-cpp)
+include(FetchContent)
+set(FETCHCONTENT_QUIET OFF)
 
-include_directories(include)
-include_directories(${antlr4-cppruntime_INCLUDES})
+include_directories($<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/StepLang> $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include> $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>)
 
 add_subdirectory(src)
-
-if(ENABLE_TESTING)
-  enable_testing()
-  message("Building Tests. Be sure to check out test/constexpr_tests for constexpr testing")
-  add_subdirectory(test)
-endif()
-
-option(ENABLE_UNITY "Enable Unity builds of projects" OFF)
-if(ENABLE_UNITY)
-  # Add for any project you want to apply unity builds for
-  set_target_properties(intro PROPERTIES UNITY_BUILD ON)
-endif()
+#add_subdirectory(test)

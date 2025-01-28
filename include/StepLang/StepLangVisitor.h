@@ -1,5 +1,5 @@
 
-// Generated from StepLang.g4 by ANTLR 4.9.3
+// Generated from StepLang.g4 by ANTLR 4.13.2
 
 #pragma once
 
@@ -19,27 +19,27 @@ public:
   /**
    * Visit parse trees produced by StepLangParser.
    */
-    virtual antlrcpp::Any visitProgram(StepLangParser::ProgramContext *context) = 0;
+    virtual std::any visitProgram(StepLangParser::ProgramContext *context) = 0;
 
-    virtual antlrcpp::Any visitMain(StepLangParser::MainContext *context) = 0;
+    virtual std::any visitMain(StepLangParser::MainContext *context) = 0;
 
-    virtual antlrcpp::Any visitFunction(StepLangParser::FunctionContext *context) = 0;
+    virtual std::any visitFunction(StepLangParser::FunctionContext *context) = 0;
 
-    virtual antlrcpp::Any visitHeader(StepLangParser::HeaderContext *context) = 0;
+    virtual std::any visitHeader(StepLangParser::HeaderContext *context) = 0;
 
-    virtual antlrcpp::Any visitBody(StepLangParser::BodyContext *context) = 0;
+    virtual std::any visitBody(StepLangParser::BodyContext *context) = 0;
 
-    virtual antlrcpp::Any visitStatement(StepLangParser::StatementContext *context) = 0;
+    virtual std::any visitStatement(StepLangParser::StatementContext *context) = 0;
 
-    virtual antlrcpp::Any visitVariable_list(StepLangParser::Variable_listContext *context) = 0;
+    virtual std::any visitVariable_list(StepLangParser::Variable_listContext *context) = 0;
 
-    virtual antlrcpp::Any visitInvocation(StepLangParser::InvocationContext *context) = 0;
+    virtual std::any visitInvocation(StepLangParser::InvocationContext *context) = 0;
 
-    virtual antlrcpp::Any visitExpression_list(StepLangParser::Expression_listContext *context) = 0;
+    virtual std::any visitExpression_list(StepLangParser::Expression_listContext *context) = 0;
 
-    virtual antlrcpp::Any visitLoop(StepLangParser::LoopContext *context) = 0;
+    virtual std::any visitLoop(StepLangParser::LoopContext *context) = 0;
 
-    virtual antlrcpp::Any visitExpression(StepLangParser::ExpressionContext *context) = 0;
+    virtual std::any visitExpression(StepLangParser::ExpressionContext *context) = 0;
 
 
 };

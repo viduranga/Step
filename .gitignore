@@ -26,3 +26,8 @@ $RECYCLE.BIN/
 .TemporaryItems
 ehthumbs.db
 Thumbs.db
+
+
+compile_commands*
+dist
+.cache

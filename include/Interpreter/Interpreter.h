@@ -6,37 +6,34 @@
 #include <StepLang/StepLangLexer.h>
 #include <StepLang/StepLangBaseVisitor.h>
 
-class Interpreter: StepLangBaseVisitor{
+class Interpreter : StepLangBaseVisitor
+{
 public:
-    Interpreter();
+  Interpreter();
 
 private:
-    antlrcpp::Any visitProgram(StepLangParser::ProgramContext *ctx) override;
+  std::any visitProgram(StepLangParser::ProgramContext *ctx) override;
 
-    antlrcpp::Any visitMain(StepLangParser::MainContext *ctx) override;
+  std::any visitMain(StepLangParser::MainContext *ctx) override;
 
-    antlrcpp::Any visitFunction(StepLangParser::FunctionContext *ctx) override;
+  std::any visitFunction(StepLangParser::FunctionContext *ctx) override;
 
-    antlrcpp::Any visitHeader(StepLangParser::HeaderContext *ctx) override;
+  std::any visitHeader(StepLangParser::HeaderContext *ctx) override;
 
-    antlrcpp::Any visitBody(StepLangParser::BodyContext *ctx) override;
+  std::any visitBody(StepLangParser::BodyContext *ctx) override;
 
-    antlrcpp::Any visitStatement(StepLangParser::StatementContext *ctx) override;
+  std::any visitStatement(StepLangParser::StatementContext *ctx) override;
 
-    antlrcpp::Any visitVariable_list(StepLangParser::Variable_listContext *ctx) override;
+  std::any visitVariable_list(StepLangParser::Variable_listContext *ctx) override;
 
-    antlrcpp::Any visitInvocation(StepLangParser::InvocationContext *ctx) override;
+  std::any visitInvocation(StepLangParser::InvocationContext *ctx) override;
 
-    antlrcpp::Any visitExpression_list(StepLangParser::Expression_listContext *ctx) override;
+  std::any visitExpression_list(StepLangParser::Expression_listContext *ctx) override;
 
-    antlrcpp::Any visitLoop(StepLangParser::LoopContext *ctx) override;
+  std::any visitLoop(StepLangParser::LoopContext *ctx) override;
 
-    antlrcpp::Any visitExpression(StepLangParser::ExpressionContext *ctx) override;
+  std::any visitExpression(StepLangParser::ExpressionContext *ctx) override;
 
 public:
-    Program parse(const std::string& code);
-
+  Program parse(const std::string &code);
 };
-
-
-

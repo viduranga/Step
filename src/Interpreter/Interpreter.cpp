@@ -3,130 +3,142 @@
 #include <Interpreter/Loop.h>
 #include <StepLang/StepLangVisitor.h>
 
-Interpreter::Interpreter()
-= default;
+Interpreter::Interpreter() = default;
 
-Program Interpreter::parse(const std::string &code) {
-    antlr4::ANTLRInputStream input_stream{code};
-    StepLangLexer lexer{&input_stream};
-    antlr4::CommonTokenStream tokens{&lexer};
-    StepLangParser parser{&tokens};
-    auto* program_tree = parser.program();
+Program Interpreter::parse(const std::string &code)
+{
+  antlr4::ANTLRInputStream input_stream{ code };
+  StepLangLexer lexer{ &input_stream };
+  antlr4::CommonTokenStream tokens{ &lexer };
+  StepLangParser parser{ &tokens };
+  auto *program_tree = parser.program();
 
-    return visitProgram(program_tree).as<Program>();
+  return std::any_cast<Program>(visitProgram(program_tree));
 }
 
-antlrcpp::Any Interpreter::visitProgram(StepLangParser::ProgramContext *ctx) {
-    Program program;
+std::any Interpreter::visitProgram(StepLangParser::ProgramContext *ctx)
+{
+  Program program;
 
-    for(auto function_context: ctx->function()){
-        DebugWrap<Function> function = visitFunction(function_context).as<DebugWrap<Function>>();
-        program[(*function).name] = function;
-    }
-    program[FUNC_MAIN] = visitMain(ctx->main()).as<DebugWrap<Function>>();
+  for (auto *function_context : ctx->function()) {
+    auto function = std::any_cast<DebugWrap<Function>>(visitFunction(function_context));
+    program[(*function).name] = function;
+  }
+  program[FUNC_MAIN] = std::any_cast<DebugWrap<Function>>(visitMain(ctx->main()));
 
-    return program;
+  return program;
 }
 
-antlrcpp::Any Interpreter::visitMain(StepLangParser::MainContext *ctx) {
-    Function function;
-    function.name = FUNC_MAIN;
-    function.statements = visitBody(ctx->body()).as<Body>();
+std::any Interpreter::visitMain(StepLangParser::MainContext *ctx)
+{
+  Function function;
+  function.name = FUNC_MAIN;
+  function.statements = std::any_cast<Body>(visitBody(ctx->body()));
 
-    return DebugWrap<Function>{function, {0,0}};
+  return DebugWrap<Function>{ function, { 0, 0 } };
 }
 
-antlrcpp::Any Interpreter::visitFunction(StepLangParser::FunctionContext *ctx) {
-    Function function;
+std::any Interpreter::visitFunction(StepLangParser::FunctionContext *ctx)
+{
+  Function function;
 
-    auto header = visitHeader(ctx->header()).as<std::tuple<char, std::vector<char>>>();
-    function.name = std::get<0>(header);
-    function.parameters = std::get<1>(header);
+  auto header = std::any_cast<std::tuple<char, std::vector<char>>>(visitHeader(ctx->header()));
+  function.name = std::get<0>(header);
+  function.parameters = std::get<1>(header);
 
-    function.statements = visitBody(ctx->body()).as<Body>();
+  function.statements = std::any_cast<Body>(visitBody(ctx->body()));
 
-    auto *start = ctx->getStart();
-    return DebugWrap<Function>{function, {start->getLine(),start->getCharPositionInLine()}};
+  auto *start = ctx->getStart();
+  return DebugWrap<Function>{ function, { start->getLine(), start->getCharPositionInLine() } };
 }
 
-antlrcpp::Any Interpreter::visitHeader(StepLangParser::HeaderContext *ctx) {
-    char name = ctx->IDENTIFIER()->getText()[0];
-    std::vector<char> parameters;
-    
-    if(ctx->variable_list())
-        parameters = visitVariable_list(ctx->variable_list()).as<std::vector<char>>();
+std::any Interpreter::visitHeader(StepLangParser::HeaderContext *ctx)
+{
+  char name = ctx->IDENTIFIER()->getText()[0];
+  std::vector<char> parameters;
 
-    return std::tuple<char, std::vector<char>>{name, parameters};
+  if (ctx->variable_list()) {
+    parameters = std::any_cast<std::vector<char>>(visitVariable_list(ctx->variable_list()));
+  }
+
+  return std::tuple<char, std::vector<char>>{ name, parameters };
 }
 
-antlrcpp::Any Interpreter::visitBody(StepLangParser::BodyContext *ctx) {
-    Body body;
+std::any Interpreter::visitBody(StepLangParser::BodyContext *ctx)
+{
+  Body body;
 
-    auto body_contexts = ctx->statement();
+  auto body_contexts = ctx->statement();
 
-    body.reserve(body_contexts.size());
-    for(auto context: body_contexts){
-        body.push_back(visitStatement(context).as<DebugWrap<Statement>>());
-    }
-    return body;
+  body.reserve(body_contexts.size());
+  for (auto *context : body_contexts) {
+    body.push_back(std::any_cast<DebugWrap<Statement>>(visitStatement(context)));
+  }
+  return body;
 }
 
-antlrcpp::Any Interpreter::visitStatement(StepLangParser::StatementContext *ctx) {
-    Statement statement;
-    if(ctx->loop()) {
-        statement = visitLoop(ctx->loop()).as<Loop>();
-    } else if(ctx->invocation()) {
-        statement = visitInvocation(ctx->invocation()).as<Invocation>();
-    } else
-        statement = static_cast<ACTION>(ctx->ACTION()->getText()[0]);
+std::any Interpreter::visitStatement(StepLangParser::StatementContext *ctx)
+{
+  Statement statement;
+  if (ctx->loop()) {
+    statement = std::any_cast<Loop>(visitLoop(ctx->loop()));
+  } else if (ctx->invocation()) {
+    statement = std::any_cast<Invocation>(visitInvocation(ctx->invocation()));
+  } else
+    statement = static_cast<ACTION>(ctx->ACTION()->getText()[0]);
 
-    auto *start = ctx->getStart();
-    return DebugWrap<Statement>{statement, {start->getLine(),start->getCharPositionInLine()}};
+  auto *start = ctx->getStart();
+  return DebugWrap<Statement>{ statement, { start->getLine(), start->getCharPositionInLine() } };
 }
 
-antlrcpp::Any Interpreter::visitVariable_list(StepLangParser::Variable_listContext *ctx) {
-    std::vector<char> variable_list;
-    auto token_list = ctx->IDENTIFIER();
+std::any Interpreter::visitVariable_list(StepLangParser::Variable_listContext *ctx)
+{
+  std::vector<char> variable_list;
+  auto token_list = ctx->IDENTIFIER();
 
-    variable_list.reserve(token_list.size());
-    for(auto *token: token_list) {
-        variable_list.push_back(token->getText()[0]);
-    }
+  variable_list.reserve(token_list.size());
+  for (auto *token : token_list) {
+    variable_list.push_back(token->getText()[0]);
+  }
 
-    return variable_list;
+  return variable_list;
 }
 
-antlrcpp::Any Interpreter::visitInvocation(StepLangParser::InvocationContext *ctx) {
-    Invocation invocation;
-    invocation.function = ctx->IDENTIFIER()->getText()[0];
+std::any Interpreter::visitInvocation(StepLangParser::InvocationContext *ctx)
+{
+  Invocation invocation;
+  invocation.function = ctx->IDENTIFIER()->getText()[0];
 
-    auto expression_list = ctx->expression_list();
-    if(expression_list)
-        invocation.arguments = visitExpression_list(expression_list).as<std::vector<std::string>>();
-    return invocation;
+  auto *expression_list = ctx->expression_list();
+  if (expression_list)
+    invocation.arguments = std::any_cast<std::vector<std::string>>(visitExpression_list(expression_list));
+  return invocation;
 }
 
-antlrcpp::Any Interpreter::visitExpression_list(StepLangParser::Expression_listContext *ctx) {
-    std::vector<std::string> expression_list;
+std::any Interpreter::visitExpression_list(StepLangParser::Expression_listContext *ctx)
+{
+  std::vector<std::string> expression_list;
 
-    auto expressions = ctx->expression();
+  auto expressions = ctx->expression();
 
-    expression_list.reserve(expressions.size());
+  expression_list.reserve(expressions.size());
 
-    for(auto& expression: expressions){
-        expression_list.push_back(visitExpression(expression).as<std::string>());
-    }
+  for (auto *expression : expressions) {
+    expression_list.push_back(std::any_cast<std::string>(visitExpression(expression)));
+  }
 
-    return expression_list;
+  return expression_list;
 }
 
-antlrcpp::Any Interpreter::visitLoop(StepLangParser::LoopContext *ctx) {
-    Loop loop;
-    loop.condition = visitExpression(ctx->expression()).as<std::string>();
-    loop.statements = visitBody(ctx->body()).as<Body>();
-    return loop;
+std::any Interpreter::visitLoop(StepLangParser::LoopContext *ctx)
+{
+  Loop loop;
+  loop.condition = std::any_cast<std::string>(visitExpression(ctx->expression()));
+  loop.statements = std::any_cast<Body>(visitBody(ctx->body()));
+  return loop;
 }
 
-antlrcpp::Any Interpreter::visitExpression(StepLangParser::ExpressionContext *ctx) {
-    return ctx->getText();
+std::any Interpreter::visitExpression(StepLangParser::ExpressionContext *ctx)
+{
+  return ctx->getText();
 }
