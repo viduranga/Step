@@ -9,13 +9,6 @@ FetchContent_Declare(
 #
 FetchContent_MakeAvailable(antlr4)
 
-# FetchContent_GetProperties(antlr4)
-# get_cmake_property(_variableNames VARIABLES)
-# list (SORT _variableNames)
-# foreach (_variableName ${_variableNames})
-#     message(STATUS "${_variableName}=${${_variableName}}")
-# endforeach()
-
 add_library(steplang STATIC)
 
 target_sources(
