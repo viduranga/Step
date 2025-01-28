@@ -16,6 +16,8 @@ add_executable(
         test
         ${TEST_SRC}
 )
+
+target_compile_definitions(test PRIVATE TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data")
 target_link_libraries(
         test
         GTest::gtest_main

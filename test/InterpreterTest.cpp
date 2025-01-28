@@ -17,7 +17,7 @@ TEST_F(InterpreterTest, Evaluator)
 
 TEST_F(InterpreterTest, EvaluatorWithArgs)
 {
-  EXPECT_EQ(Evaluator::evaluate("10*x+y", { { 'x', 2 }, { 'y', 3 }, { '1', 3 } }), 23);
+  EXPECT_EQ(Evaluator::evaluate("10*x+y", { { 'x', 2 }, { 'y', 3 }, { '#', 3 } }), 23);
 }
 
 TEST_F(InterpreterTest, RecursiveProgram)

@@ -25,7 +25,7 @@ TEST(ParserTest, BasicLevelParse)
     "__+__________+__"
     "________________";
   Level level;
-  EXPECT_NOTHROW(level = parser.parseLevel(std::ifstream(std::string(TEST_DATA_DIR) + "/test.level")));
+  EXPECT_NO_THROW(level = parser.parseLevel(std::ifstream(std::string(TEST_DATA_DIR) + "/test.level")));
   EXPECT_EQ(level.grid.size(), 16 * 16);
   EXPECT_EQ(level.facing, DIRECTION::UP);
 
