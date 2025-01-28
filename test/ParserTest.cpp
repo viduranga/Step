@@ -1,13 +1,14 @@
 #include <iostream>
-#include <catch2/catch.hpp>
 #include <Parser/DataParser.h>
 #include <fstream>
+#include <gtest/gtest.h>
 
-TEST_CASE("Parser test", "[parser]")
+TEST(ParserTest, BasicLevelParse)
 {
   DataParser parser;
 
-  std::string level_str = "+_______________"
+  std::string level_str =
+    "+_______________"
     "__+__________+__"
     "_+$__________$+_"
     "___*________*___"
@@ -24,11 +25,10 @@ TEST_CASE("Parser test", "[parser]")
     "__+__________+__"
     "________________";
   Level level;
-  REQUIRE_NOTHROW(  level = parser.parseLevel(std::ifstream(std::string(TEST_DATA_DIR)+"/test.level")));
-  REQUIRE(level.grid.size() == 16*16);
-  REQUIRE(level.facing == DIRECTION::UP);
+  EXPECT_NOTHROW(level = parser.parseLevel(std::ifstream(std::string(TEST_DATA_DIR) + "/test.level")));
+  EXPECT_EQ(level.grid.size(), 16 * 16);
+  EXPECT_EQ(level.facing, DIRECTION::UP);
 
-  std::string out(reinterpret_cast<char*>(level.grid.data()));
-  REQUIRE(out == level_str);
-
+  std::string out(reinterpret_cast<char *>(level.grid.data()));
+  EXPECT_EQ(out, level_str);
 }

@@ -49,4 +49,4 @@ set(FETCHCONTENT_QUIET OFF)
 include_directories($<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/StepLang> $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include> $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>)
 
 add_subdirectory(src)
-#add_subdirectory(test)
+add_subdirectory(test)
