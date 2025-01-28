@@ -1,13 +1,13 @@
 #pragma once
 #include <Interpreter/Defs.h>
 #include <stack>
-#include <vector>
 #include <Interpreter/Function.h>
 #include <Interpreter/Loop.h>
 #include <Interpreter/StackFrame.h>
 
-class Runtime {
-public:
+class Runtime
+{
+  public:
     Runtime();
 
     void load(Program _program);
@@ -15,10 +15,7 @@ public:
     ACTION step();
     void reset();
 
-private:
+  private:
     Program program;
     std::stack<StackFrame> stack;
 };
-
-
-

@@ -1,6 +1,9 @@
 #pragma once
+#include <string>
+#include <Interpreter/Defs.h>
 
-struct Loop {
+struct Loop
+{
     std::string condition;
     Body statements;
 };

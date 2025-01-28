@@ -30,4 +30,4 @@ jobs:
             CMAKE_BUILD_TYPE=RelWithDebInfo
 
       - name: Run Google Tests
-        run: ./build/relwithdebinfo/test/test
+        run: ./build/test/test

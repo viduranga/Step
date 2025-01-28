@@ -3,7 +3,7 @@
 
 #include <cassert>
 
-enum class ITEM: char{
+enum class ITEM : char {
     EMPTY = '_',
     PLAYER = 'P',
     BARRIER = '+',
@@ -11,7 +11,7 @@ enum class ITEM: char{
     TREAT = '$'
 };
 
-enum class DIRECTION: char{
+enum class DIRECTION : char {
     UP = 'U',
     DOWN = 'D',
     LEFT = 'L',

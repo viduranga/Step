@@ -3,30 +3,32 @@
 #include <optional>
 #include <map>
 #include <cassert>
+#include <stdint.h>
+#include <vector>
 
 enum class ACTION : char {
-  FORWARD = 'a',
-  LEFT = 'l',
-  RIGHT = 'r',
-  END = 'e'
+    FORWARD = 'a',
+    LEFT = 'l',
+    RIGHT = 'r',
+    END = 'e'
 };
 
 struct DebugInfo
 {
-  size_t line;
-  size_t column;
+    size_t line;
+    size_t column;
 };
 
 template<typename T>
 struct DebugWrap
 {
-  T &operator*()
-  {
-    return data;
-  }
+    T &operator*()
+    {
+        return data;
+    }
 
-  T data;
-  DebugInfo debugInfo;
+    T data;
+    DebugInfo debugInfo;
 };
 
 struct Invocation;

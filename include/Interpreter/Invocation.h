@@ -2,7 +2,8 @@
 #include <string>
 #include <vector>
 
-struct Invocation{
+struct Invocation
+{
     char function;
     std::vector<std::string> arguments;
 };

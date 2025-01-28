@@ -6,11 +6,9 @@
 #include <Interpreter/Invocation.h>
 #include <vector>
 
-struct Function {
+struct Function
+{
     char name;
     std::vector<char> parameters;
     Body statements;
 };
-
-
-
