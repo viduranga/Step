@@ -120,8 +120,16 @@ private:
 };
 
 int main(int argc, char **argv) {
+  if (argc < 2) {
+    std::cerr << "Usage: " << argv[0] << " <input_file>" << std::endl;
+    return 1;
+  }
 
-  // First argument is a path to a file. Read it as a istream. AI!
+  std::ifstream input_file(argv[1]);
+  if (!input_file) {
+    std::cerr << "Error: Could not open file " << argv[1] << std::endl;
+    return 1;
+  }
 
   const int width = 20, height = 10;
   SnakeGame game(width, height);
