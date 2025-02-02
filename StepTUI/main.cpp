@@ -1,5 +1,6 @@
 #include <chrono>
 #include <deque>
+#include <fstream>
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/screen_interactive.hpp>
 #include <random>
@@ -125,8 +126,6 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  // 1. Implicit instantiation of undefined template 'std::basic_ifstream<char>'
-  // [template_instantiate_undefined] AI!
   std::ifstream input_file(argv[1]);
   if (!input_file) {
     std::cerr << "Error: Could not open file " << argv[1] << std::endl;
