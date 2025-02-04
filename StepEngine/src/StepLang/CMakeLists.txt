@@ -1,5 +1,3 @@
-include(FetchContent)
-
 FetchContent_Declare(
         antlr4
         GIT_REPOSITORY https://github.com/antlr/antlr4
@@ -25,6 +23,7 @@ target_sources(
 
 target_include_directories(
         steplang
+
         PUBLIC
         ${LIBANTLR4_SOURCE_DIR}/runtime/src
 )

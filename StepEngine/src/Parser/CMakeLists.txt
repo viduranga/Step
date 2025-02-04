@@ -1,4 +1,3 @@
-include(FetchContent)
 
 add_library(parser STATIC)
 

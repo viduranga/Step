@@ -31,3 +31,4 @@ Thumbs.db
 compile_commands*
 dist
 .cache
+.aider*
