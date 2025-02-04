@@ -33,6 +33,8 @@ Level DataParser::parseLevel(std::istream &&data)
     if (!validateLevel(level))
         throw GridMalform("Grid is malformed");
 
+    extractPlayer(level);
+
     return level;
 }
 
@@ -59,4 +61,16 @@ bool DataParser::validateLevel(const Level &level)
         throw GridMalform("Too many players in the grid");
 
     return true;
+}
+
+void DataParser::extractPlayer(Level &level)
+{
+    for (uint32_t i = 0; i < level.grid.size(); i++) {
+        if (level.grid[i] == ITEM::PLAYER) {
+            level.player = std::make_tuple(i % level.grid_size, i / level.grid_size);
+            level.grid[i] = ITEM::EMPTY;
+            return;
+        }
+    }
+    throw GridMalform("No player in the grid");
 }

@@ -25,7 +25,6 @@ jobs:
       - name: Build Project
         uses: threeal/cmake-action@v2.1.0
         with:
-          source-dir: StepEngine
           generator: Ninja
           options: |
             CMAKE_BUILD_TYPE=RelWithDebInfo

@@ -12,4 +12,4 @@ build target='debug':
 test target='debug': build
     #!/usr/bin/env zsh
     local target="{{lowercase(target)}}"
-    ./build/$target/test/test
+    ./build/$target/StepEngine/test/test

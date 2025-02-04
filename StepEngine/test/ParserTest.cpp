@@ -5,30 +5,31 @@
 
 TEST(ParserTest, BasicLevelParse)
 {
-  DataParser parser;
+    DataParser parser;
 
-  std::string level_str =
-    "+_______________"
-    "__+__________+__"
-    "_+$__________$+_"
-    "___*________*___"
-    "________________"
-    "________________"
-    "____$___$$______"
-    "________________"
-    "________________"
-    "____$___$$______"
-    "________________"
-    "__P_____________"
-    "___*________*___"
-    "_+*__________$+_"
-    "__+__________+__"
-    "________________";
-  Level level;
-  EXPECT_NO_THROW(level = parser.parseLevel(std::ifstream(std::string(TEST_DATA_DIR) + "/test.level")));
-  EXPECT_EQ(level.grid.size(), 16 * 16);
-  EXPECT_EQ(level.facing, DIRECTION::UP);
+    std::string level_str_without_player =
+        "+_______________"
+        "__+__________+__"
+        "_+$__________$+_"
+        "___*________*___"
+        "________________"
+        "________________"
+        "____$___$$______"
+        "________________"
+        "________________"
+        "____$___$$______"
+        "________________"
+        "________________"
+        "___*________*___"
+        "_+*__________$+_"
+        "__+__________+__"
+        "________________";
+    Level level;
+    EXPECT_NO_THROW(level = parser.parseLevel(std::ifstream(std::string(TEST_DATA_DIR) + "/test.level")));
+    EXPECT_EQ(level.grid.size(), 16 * 16);
+    EXPECT_EQ(level.facing, DIRECTION::UP);
 
-  std::string out(reinterpret_cast<char *>(level.grid.data()));
-  EXPECT_EQ(out, level_str);
+    std::string out(reinterpret_cast<char *>(level.grid.data()));
+    EXPECT_EQ(out, level_str_without_player);
+    EXPECT_EQ(level.player, std::make_tuple(2, 11));
 }
