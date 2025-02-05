@@ -23,10 +23,11 @@ ACTION Runtime::step()
 
     while (head == stack_top.body->end()) {
         stack.pop();
-        if (stack.empty())
+        if (stack.empty()) {
             return ACTION::END;
-        else
+        } else {
             return step();
+        }
     }
 
     if (std::holds_alternative<ACTION>(**head)) {
@@ -45,9 +46,9 @@ ACTION Runtime::step()
 
             for (auto &argument : invocation.arguments) {
                 auto result = Evaluator::evaluate(argument, stack_variables);
-                if (result > 0)
+                if (result > 0) {
                     call_variables.push_back(static_cast<unsigned int>(result));
-                else {
+                } else {
                     head++;
                     return step();
                 }
@@ -66,8 +67,9 @@ ACTION Runtime::step()
     } else if (std::holds_alternative<Loop>(**head)) {
         auto &loop = std::get<Loop>(**head);
         auto condition = Evaluator::evaluate(loop.condition, stack_top.variables);
-        if (stack_top.variables.find(SEEKER_VAR_1) == stack_top.variables.end())
+        if (stack_top.variables.find(SEEKER_VAR_1) == stack_top.variables.end()) {
             stack_top.variables[SEEKER_VAR_1] = 0;
+        }
         auto &loop_variable = stack_top.variables[SEEKER_VAR_1];
         if (condition > 0 && loop_variable < static_cast<uint32_t>(condition)) {
             StackFrame call_frame;
@@ -84,8 +86,9 @@ ACTION Runtime::step()
             stack_top.variables.erase(SEEKER_VAR_1);
             return step();
         }
-    } else
+    } else {
         assert(false);
+    }
 }
 
 void Runtime::reset()

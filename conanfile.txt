@@ -1,0 +1,11 @@
+[requires]
+ftxui/5.0.0
+gtest/1.15.0
+antlr4-cppruntime/4.13.1
+
+[generators]
+CMakeDeps
+CMakeToolchain
+
+[layout]
+cmake_layout

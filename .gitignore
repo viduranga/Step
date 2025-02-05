@@ -32,3 +32,5 @@ compile_commands*
 dist
 .cache
 .aider*
+
+CMakeUserPresets.json

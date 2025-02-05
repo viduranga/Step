@@ -1,15 +1,15 @@
 set dotenv-load
 
-build target='debug':
+clean target='Debug':
     #!/usr/bin/env zsh
-    local target="{{lowercase(target)}}"
-    mkdir -p ./build/$target
-    cd ./build/$target
-    cmake ../../. -GNinja -DCMAKE_BUILD_TYPE=$target
-    cmake --build . --target all -- -j 4
-    ln -sf ./build/$target/compile_commands.json ../../compile_commands.$target.json
+    rm -rf build/{{target}}
 
-test target='debug': build
+build target='Debug':
     #!/usr/bin/env zsh
-    local target="{{lowercase(target)}}"
-    ./build/$target/StepEngine/test/test
+    conan install . --build=missing --settings=build_type={{target}}
+    cmake --preset conan-{{lowercase(target)}}
+    cmake --build --target all --preset conan-{{lowercase(target)}}
+
+test target='Debug': build
+    #!/usr/bin/env zsh
+    ./build/{{target}}/StepEngine/test/test
