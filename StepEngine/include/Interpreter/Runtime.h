@@ -10,7 +10,7 @@ class Runtime
   public:
     Runtime();
 
-    void load(Program _program);
+    void load(Program program);
 
     ACTION step();
     void reset();

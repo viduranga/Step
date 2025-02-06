@@ -21,6 +21,6 @@ class InvalidOperator : virtual public std::exception
     }
 
   private:
-    std::string op{};
-    std::string error_message{};
+    std::string op;
+    std::string error_message;
 };

@@ -5,9 +5,6 @@
 class DataParser
 {
   public:
-    Level parseLevel(std::istream &&data);
-    bool validateLevel(const Level &level);
-
-  private:
-    void extractPlayer(Level &level);
+    static Level parseLevel(std::istream &&data);
+    static bool validateLevel(const Level &level);
 };

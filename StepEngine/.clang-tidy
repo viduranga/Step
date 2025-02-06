@@ -1,7 +1,10 @@
 ---
-Checks:          '*,-fuchsia-*,-google-*,-zircon-*,-abseil-*,-modernize-use-trailing-return-type,-llvm*'
-WarningsAsErrors: ''
-HeaderFilterRegex: ''
-FormatStyle:     none
-
-
+Checks: "*,-fuchsia-*,-google-*,-zircon-*,-abseil-*,-modernize-use-trailing-return-type,-llvm*"
+WarningsAsErrors: ""
+HeaderFilterRegex: ""
+FormatStyle: none
+CheckOptions:
+  - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
+    value: "1"
+  - key: readability-magic-numbers.IgnorePowersOf2IntegerValues
+    value: "1"

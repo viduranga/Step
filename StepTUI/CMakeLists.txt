@@ -16,6 +16,7 @@ add_executable(step_tui main.cpp)
 target_link_libraries(step_tui
 
     PUBLIC
+    game_engine
     interpreter
     parser
     steplang

@@ -9,6 +9,7 @@ build target='Debug':
     conan install . --build=missing --settings=build_type={{target}}
     cmake --preset conan-{{lowercase(target)}}
     cmake --build --target all --preset conan-{{lowercase(target)}}
+    ln -sf build/{{target}}/compile_commands.json compile_commands.json
 
 test target='Debug': build
     #!/usr/bin/env zsh

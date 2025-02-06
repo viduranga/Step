@@ -16,4 +16,9 @@ struct Level
     {
         return grid[(y * grid_size) + x];
     }
-} __attribute__((aligned(64)));
+
+    const ITEM &operator()(uint32_t x, uint32_t y) const
+    {
+        return grid[(y * grid_size) + x];
+    }
+};

@@ -11,6 +11,7 @@ class Interpreter : StepLangBaseVisitor
 {
   public:
     Interpreter();
+    Program parse(const std::string &code);
 
   private:
     std::any visitProgram(StepLangParser::ProgramContext *ctx) override;
@@ -34,7 +35,4 @@ class Interpreter : StepLangBaseVisitor
     std::any visitLoop(StepLangParser::LoopContext *ctx) override;
 
     std::any visitExpression(StepLangParser::ExpressionContext *ctx) override;
-
-  public:
-    Program parse(const std::string &code);
 };

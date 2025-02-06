@@ -3,16 +3,14 @@
 #include <Interpreter/Evaluator.h>
 #include <utility>
 
-Runtime::Runtime()
-{
-}
+Runtime::Runtime() = default;
 
-void Runtime::load(Program _program)
+void Runtime::load(Program program)
 {
     stack = std::stack<StackFrame>();
-    program = std::move(_program);
+    this->program = std::move(program);
 
-    auto &main = *program[FUNC_MAIN];
+    auto &main = *this->program[FUNC_MAIN];
     stack.push({ &main.statements, main.statements.begin(), {} });
 }
 

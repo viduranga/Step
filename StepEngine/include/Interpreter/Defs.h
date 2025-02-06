@@ -42,5 +42,5 @@ using Body = std::vector<DebugWrap<Statement>>;
 
 using Program = std::map<char, DebugWrap<Function>>;
 
-#define FUNC_MAIN '$'
-#define SEEKER_VAR_1 '#'
+constexpr char FUNC_MAIN = '$';
+constexpr char SEEKER_VAR_1 = '#';

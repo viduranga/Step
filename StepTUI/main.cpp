@@ -1,3 +1,4 @@
+#include "GameEngine/Game.h"
 #include "Parser/Defs.h"
 #include "Parser/Level.h"
 #include <Parser/DataParser.h>
@@ -7,119 +8,62 @@
 #include <ftxui/component/screen_interactive.hpp>
 #include <thread>
 
-class StepGame {
+class StepGameTUI {
 public:
-  StepGame(Level &level) : level(level) { Reset(); }
+  StepGameTUI() {}
 
-  void Reset() {
-    // snake = {{width / 2, height / 2}};
-    // direction = RIGHT;
-    // alive = true;
-    // score = 0;
-    // PlaceFood();
-  }
-  //
-  // void PlaceFood() {
-  //   do {
-  //     food = {dist_x(rng), dist_y(rng)};
-  //   } while (std::find(snake.begin(), snake.end(), food) != snake.end());
-  // }
-  //
-  // void ChangeDirection(Direction new_direction) {
-  //   if ((direction == UP && new_direction != DOWN) ||
-  //       (direction == DOWN && new_direction != UP) ||
-  //       (direction == LEFT && new_direction != RIGHT) ||
-  //       (direction == RIGHT && new_direction != LEFT)) {
-  //     direction = new_direction;
-  //   }
-  // }
-
-  void Update() {
-    // if (!alive)
-    //   return;
-    //
-    // Point new_head = snake.front();
-    // switch (direction) {
-    // case UP:
-    //   --new_head.y;
-    //   break;
-    // case DOWN:
-    //   ++new_head.y;
-    //   break;
-    // case LEFT:
-    //   --new_head.x;
-    //   break;
-    // case RIGHT:
-    //   ++new_head.x;
-    //   break;
-    // }
-    //
-    // if (new_head.x <= 0 || new_head.x >= width - 1 || new_head.y <= 0 ||
-    //     new_head.y >= height - 1 ||
-    //     std::find(snake.begin(), snake.end(), new_head) != snake.end()) {
-    //   alive = false;
-    //   return;
-    // }
-    //
-    // snake.push_front(new_head);
-    // if (new_head == food) {
-    //   ++score;
-    //   PlaceFood();
-    // } else {
-    //   snake.pop_back();
-    // }
+  void load(std::istream &&level_data, const std::string &program_data) {
+    game.load(std::move(level_data), program_data);
   }
 
-  ftxui::Component Render() {
+  ftxui::Component render() {
     return ftxui::Renderer([&] {
       ftxui::Elements elements;
-      for (int y = 0; y < level.grid_size; ++y) {
+      for (int y = 0; y < game.getLevel().grid_size; ++y) {
         ftxui::Elements row;
-        for (int x = 0; x < level.grid_size; ++x) {
-          // if (x == 0 || x == level.grid_size - 1 || y == 0 ||
-          //     y == level.grid_size - 1) {
-          //   row.push_back(ftxui::text("█"));
-          switch (level(x, y)) {
-          case ITEM::EMPTY:
-            row.push_back(ftxui::text("┼─"));
-            break;
-          case ITEM::PLAYER:
+        for (int x = 0; x < game.getLevel().grid_size; ++x) {
+          if (std::make_tuple(x, y) == game.getLevel().player) {
             row.push_back(ftxui::text(" "));
-            break;
-          case ITEM::BARRIER:
-            row.push_back(ftxui::text("██"));
-            break;
-          case ITEM::VOID:
-            row.push_back(ftxui::text(" "));
-            break;
-          case ITEM::TREAT:
-            row.push_back(ftxui::text(" "));
-            break;
+          } else {
+            switch (game.getLevel()(x, y)) {
+            case ITEM::EMPTY:
+              row.push_back(ftxui::text("┼─"));
+              break;
+            case ITEM::BARRIER:
+              row.push_back(ftxui::text("██"));
+              break;
+            case ITEM::VOID:
+              row.push_back(ftxui::text(" "));
+              break;
+            case ITEM::TREAT:
+              row.push_back(ftxui::text(" "));
+              break;
+            }
           }
         }
         elements.push_back(ftxui::hbox(row));
       }
-      return ftxui::vbox({ftxui::text("Step"), ftxui::separator(),
-                          ftxui::vbox(elements)}) |
+      return ftxui::vbox({ftxui::text(std::format(
+                              "Step treats: {}, player: x={}, y={}, facing: "
+                              "{}, action: {}",
+                              game.treat_count, std::get<0>(game.level.player),
+                              std::get<1>(game.level.player),
+                              static_cast<char>(game.level.facing),
+                              static_cast<char>(game.action))),
+                          ftxui::separator(), ftxui::vbox(elements)}) |
              ftxui::border;
     });
   }
 
+  GameStatus tick() { return game.tick(); }
+
 private:
-  Level &level;
-  // int width, height, score
-  // bool alive;
-  // std::deque<Point> snake;
-  // Point food;
-  // Direction direction;
-  // std::random_device rd;
-  // std::mt19937 rng;
-  // std::uniform_int_distribution<int> dist_x, dist_y;
+  Game game;
 };
 
 int main(int argc, char **argv) {
   if (argc < 2) {
-    std::cerr << "Usage: " << argv[0] << " <input_file>" << std::endl;
+    std::cerr << "Usage: " << argv[0] << " <input_file> <program>" << std::endl;
     return 1;
   }
 
@@ -129,12 +73,12 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  DataParser data_parser;
+  std::string program = "f(x)=<x>[a]rf(x-2)\nf(15)";
 
-  auto level = data_parser.parseLevel(std::move(input_file));
+  StepGameTUI game_TUI{};
 
-  const int width = level.grid_size, height = level.grid_size;
-  StepGame game(level);
+  game_TUI.load(std::move(input_file), program);
+
   auto screen = ftxui::ScreenInteractive::Fullscreen();
 
   auto key_listener = ftxui::CatchEvent([&](ftxui::Event event) {
@@ -151,12 +95,12 @@ int main(int argc, char **argv) {
     return true;
   });
 
-  auto ui = ftxui::Container::Vertical({game.Render()}) | key_listener;
+  auto ui = ftxui::Container::Vertical({game_TUI.render()}) | key_listener;
 
   std::thread([&] {
-    while (true) {
+    while (game_TUI.tick() != GameStatus::ENDED) {
       std::this_thread::sleep_for(std::chrono::milliseconds(150));
-      game.Update();
+      // game_TUI.Update();
       screen.PostEvent(ftxui::Event::Custom);
     }
   }).detach();
