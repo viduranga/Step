@@ -22,21 +22,36 @@ public:
       for (int y = 0; y < game.getLevel().grid_size; ++y) {
         ftxui::Elements row;
         for (int x = 0; x < game.getLevel().grid_size; ++x) {
-          if (std::make_tuple(x, y) == game.getLevel().player) {
-            row.push_back(ftxui::text(" "));
+          // Add borders around the edges
+          if (x == 0 && y == 0) {
+            row.push_back(ftxui::text("╔═"));
+          } else if (x == game.getLevel().grid_size - 1 && y == 0) {
+            row.push_back(ftxui::text("╗ "));
+          } else if (x == 0 && y == game.getLevel().grid_size - 1) {
+            row.push_back(ftxui::text("╚═"));
+          } else if (x == game.getLevel().grid_size - 1 && y == game.getLevel().grid_size - 1) {
+            row.push_back(ftxui::text("╝ "));
+          } else if (x == 0) {
+            row.push_back(ftxui::text("║ "));
+          } else if (x == game.getLevel().grid_size - 1) {
+            row.push_back(ftxui::text("║ "));
+          } else if (y == 0 || y == game.getLevel().grid_size - 1) {
+            row.push_back(ftxui::text("══"));
+          } else if (std::make_tuple(x, y) == game.getLevel().player) {
+            row.push_back(ftxui::text(" ") | ftxui::color(ftxui::Color::Blue));
           } else {
             switch (game.getLevel()(x, y)) {
             case ITEM::EMPTY:
-              row.push_back(ftxui::text("┼─"));
+              row.push_back(ftxui::text("┼─") | ftxui::dim | ftxui::dim | ftxui::dim);
               break;
             case ITEM::BARRIER:
-              row.push_back(ftxui::text("██"));
+              row.push_back(ftxui::text("██") | ftxui::color(ftxui::Color::Yellow));
               break;
             case ITEM::VOID:
-              row.push_back(ftxui::text(" "));
+              row.push_back(ftxui::text(" ") | ftxui::color(ftxui::Color::Red));
               break;
             case ITEM::TREAT:
-              row.push_back(ftxui::text(" "));
+              row.push_back(ftxui::text(" ") | ftxui::color(ftxui::Color::Green));
               break;
             }
           }
@@ -62,7 +77,7 @@ private:
 };
 
 int main(int argc, char **argv) {
-  if (argc < 2) {
+  if (argc < 3) {
     std::cerr << "Usage: " << argv[0] << " <input_file> <program>" << std::endl;
     return 1;
   }
@@ -73,7 +88,9 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  std::string program = "f(x)=<x>[a]rf(x-2)\nf(15)";
+  // std::string program = "f(x)=<x>[a]rf(x-2)\nf(15)";
+  std::string program = argv[2];
+  program = program.replace(program.find("\\n"), 2, "\n");
 
   StepGameTUI game_TUI{};
 

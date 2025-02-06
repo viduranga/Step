@@ -34,4 +34,4 @@ jobs:
           cmake --build --target all --preset conan-relwithdebinfo
 
       - name: Run Google Tests
-        run: .build/RelWithDebInfo/StepEngine/test/test
+        run: build/RelWithDebInfo/StepEngine/test/test

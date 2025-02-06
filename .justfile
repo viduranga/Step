@@ -13,4 +13,4 @@ build target='Debug':
 
 test target='Debug': build
     #!/usr/bin/env zsh
-    ./build/{{target}}/StepEngine/test/test
+    build/{{target}}/StepEngine/test/test
