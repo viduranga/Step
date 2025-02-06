@@ -26,20 +26,11 @@ jobs:
         id: conan
         uses: turtlebrowser/get-conan@main
 
-      - name: Get Conan Cache Key
-        id: get-conan-cache-key
-        run: |
-          echo "cache-key=${{ runner.os }}-conan-${{ hashFiles('**/conanfile.txt', '**/conanfile.py') }}" >> $GITHUB_OUTPUT
-
       - name: Cache Conan packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
-          path: |
-            ~/.conan/data
-            ~/.conan/downloads
-          key: ${{ steps.get-conan-cache-key.outputs.cache-key }}
-          restore-keys: |
-            ${{ runner.os }}-conan-
+          path: ~/.conan2
+          key: ${{ runner.os }}-conan
 
       - name: Build Project
         run: |
