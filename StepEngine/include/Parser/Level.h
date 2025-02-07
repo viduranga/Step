@@ -12,12 +12,12 @@ struct Level
     DIRECTION facing;
 
 
-    ITEM &operator()(uint32_t x, uint32_t y)
+    ITEM &operator[](uint32_t x, uint32_t y)
     {
         return grid[(y * grid_size) + x];
     }
 
-    const ITEM &operator()(uint32_t x, uint32_t y) const
+    const ITEM &operator[](uint32_t x, uint32_t y) const
     {
         return grid[(y * grid_size) + x];
     }

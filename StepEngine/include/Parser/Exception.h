@@ -11,8 +11,6 @@ class FileMalform : virtual public std::exception
         error_message = std::string("Malformed file:") + message;
     }
 
-    ~FileMalform() noexcept override = default;
-
     [[nodiscard]] const char *what() const noexcept override
     {
         return error_message.c_str();
@@ -30,8 +28,6 @@ class GridMalform : virtual public std::exception
     {
         error_message = std::string("Malformed level grid:") + message;
     }
-
-    ~GridMalform() noexcept override = default;
 
     [[nodiscard]] const char *what() const noexcept override
     {

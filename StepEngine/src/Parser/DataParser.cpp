@@ -40,7 +40,7 @@ Level DataParser::parseLevel(std::istream &&data)
 
     // extractPlayer(level);
 
-    auto player_it = std::ranges::find(level.grid.begin(), level.grid.end(), ITEM::PLAYER);
+    auto player_it = std::find(level.grid.begin(), level.grid.end(), ITEM::PLAYER);
 
     auto player_index = std::distance(level.grid.begin(), player_it);
     level.grid[player_index] = ITEM::EMPTY;

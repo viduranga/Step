@@ -12,6 +12,7 @@ void Runtime::load(Program program)
 
     auto &main = *this->program[FUNC_MAIN];
     stack.push({ &main.statements, main.statements.begin(), {} });
+    reset();
 }
 
 ACTION Runtime::step()

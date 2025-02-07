@@ -16,7 +16,7 @@ public:
     game.load(std::move(level_data), program_data);
   }
 
-  ftxui::Component render() {
+  auto Render() {
     return ftxui::Renderer([&] {
       ftxui::Elements elements;
       for (int y = 0; y < game.getLevel().grid_size; ++y) {
@@ -29,7 +29,8 @@ public:
             row.push_back(ftxui::text("╗ "));
           } else if (x == 0 && y == game.getLevel().grid_size - 1) {
             row.push_back(ftxui::text("╚═"));
-          } else if (x == game.getLevel().grid_size - 1 && y == game.getLevel().grid_size - 1) {
+          } else if (x == game.getLevel().grid_size - 1 &&
+                     y == game.getLevel().grid_size - 1) {
             row.push_back(ftxui::text("╝ "));
           } else if (x == 0) {
             row.push_back(ftxui::text("║ "));
@@ -38,35 +39,32 @@ public:
           } else if (y == 0 || y == game.getLevel().grid_size - 1) {
             row.push_back(ftxui::text("══"));
           } else if (std::make_tuple(x, y) == game.getLevel().player) {
-            row.push_back(ftxui::text(" ") | ftxui::color(ftxui::Color::Blue));
+            row.push_back(ftxui::text("󰚩 ") |
+                          ftxui::color(ftxui::Color::Blue));
           } else {
-            switch (game.getLevel()(x, y)) {
+            switch (game.getLevel()[x, y]) {
             case ITEM::EMPTY:
-              row.push_back(ftxui::text("┼─") | ftxui::dim | ftxui::dim | ftxui::dim);
+              row.push_back(ftxui::text(". ") | ftxui::dim | ftxui::dim |
+                            ftxui::dim);
               break;
             case ITEM::BARRIER:
-              row.push_back(ftxui::text("██") | ftxui::color(ftxui::Color::Yellow));
+              row.push_back(ftxui::text("█▉") |
+                            ftxui::color(ftxui::Color::Yellow));
               break;
             case ITEM::VOID:
-              row.push_back(ftxui::text(" ") | ftxui::color(ftxui::Color::Red));
+              row.push_back(ftxui::text(" ") |
+                            ftxui::color(ftxui::Color::Red));
               break;
             case ITEM::TREAT:
-              row.push_back(ftxui::text(" ") | ftxui::color(ftxui::Color::Green));
+              row.push_back(ftxui::text(" ") |
+                            ftxui::color(ftxui::Color::Green));
               break;
             }
           }
         }
         elements.push_back(ftxui::hbox(row));
       }
-      return ftxui::vbox({ftxui::text(std::format(
-                              "Step treats: {}, player: x={}, y={}, facing: "
-                              "{}, action: {}",
-                              game.treat_count, std::get<0>(game.level.player),
-                              std::get<1>(game.level.player),
-                              static_cast<char>(game.level.facing),
-                              static_cast<char>(game.action))),
-                          ftxui::separator(), ftxui::vbox(elements)}) |
-             ftxui::border;
+      return ftxui::vbox(elements) | ftxui::center;
     });
   }
 
@@ -89,12 +87,13 @@ int main(int argc, char **argv) {
   }
 
   // std::string program = "f(x)=<x>[a]rf(x-2)\nf(15)";
-  std::string program = argv[2];
-  program = program.replace(program.find("\\n"), 2, "\n");
+  std::string program_data = argv[2];
+  program_data = program_data.replace(program_data.find("\\n"), 2, "\n");
 
   StepGameTUI game_TUI{};
+  // std::string program_data;
 
-  game_TUI.load(std::move(input_file), program);
+  game_TUI.load(std::move(input_file), program_data);
 
   auto screen = ftxui::ScreenInteractive::Fullscreen();
 
@@ -112,16 +111,42 @@ int main(int argc, char **argv) {
     return true;
   });
 
-  auto ui = ftxui::Container::Vertical({game_TUI.render()}) | key_listener;
+  auto running = false;
 
   std::thread([&] {
-    while (game_TUI.tick() != GameStatus::ENDED) {
+    while (true) {
       std::this_thread::sleep_for(std::chrono::milliseconds(150));
-      // game_TUI.Update();
       screen.PostEvent(ftxui::Event::Custom);
+      if (running && game_TUI.tick() == GameStatus::ENDED) {
+        break;
+      }
     }
   }).detach();
 
-  screen.Loop(ui);
+  auto textarea = ftxui::Input(&program_data);
+  auto button = ftxui::Button("Run", [&] {
+    // std::cout << "Running program: " << program_data << std::endl;
+    std::ifstream input_file(argv[1]);
+    game_TUI.load(std::move(input_file), program_data);
+    running = true;
+  });
+
+  auto container = ftxui::Container::Vertical({
+      textarea,
+      button,
+  });
+  int size = 50;
+  auto layout = ftxui::ResizableSplitRight(container, game_TUI.Render(), &size);
+
+  auto component = ftxui::Renderer(layout, [&] {
+    return ftxui::vbox({
+               ftxui::text("Input:"),
+               ftxui::separator(),
+               layout->Render() | ftxui::flex,
+           }) |
+           ftxui::border;
+  });
+
+  screen.Loop(component);
   return 0;
 }

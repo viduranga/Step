@@ -9,7 +9,9 @@ Game::Game() = default;
 void Game::load(std::istream &&level_data, const std::string &program_data)
 {
     this->level = DataParser::parseLevel(std::move(level_data));
-    this->runtime.load(interpreter.parse(program_data));
+    if (!program_data.empty()) {
+        this->runtime.load(interpreter.parse(program_data));
+    }
 
     treat_count = std::ranges::count(level.grid.begin(), level.grid.end(), ITEM::TREAT);
 }
@@ -48,7 +50,7 @@ GameStatus Game::tick()
             break;
         }
 
-        auto next = level(player_x, player_y);
+        auto next = level[player_x, player_y];
 
         if (next == ITEM::VOID) {
             level.player = std::make_tuple(player_x, player_y);
@@ -57,7 +59,7 @@ GameStatus Game::tick()
             // don't move
         } else if (next == ITEM::TREAT) {
             treat_count--;
-            level(player_x, player_y) = ITEM::EMPTY;
+            level[player_x, player_y] = ITEM::EMPTY;
             level.player = std::make_tuple(player_x, player_y);
 
             if (treat_count == 0) {
